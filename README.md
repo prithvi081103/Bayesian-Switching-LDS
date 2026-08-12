@@ -80,14 +80,20 @@ Plots the cumulative equity curve of the regime-switching strategy versus a stan
 * Background shading explicitly colors the historical regimes (Green = Bull, Red = Bear, Gray = Neutral).
 * Because this is a raw, un-optimized implementation acting on a minimal feature set, expect standard strategy returns to trail a 14-year mega-bull market. The power here lies in the mathematically pure regime separation.
 
+![rSLDS Strategy Backtest](results/rslds_strategy_backtest.png)
+
 ### 2. Latent State Extraction (`{model}_latent_vs_returns.png`)
 * This dual-axis chart plots the raw asset returns alongside the primary extracted continuous latent dimension ($x_t^{(0)}$).
 * You can visually see how the Kalman filter smooths noisy market data into a highly readable, continuous "economic wave" that tracks underlying market health.
+
+![rSLDS Latent vs Returns](results/rslds_latent_vs_returns.png)
 
 ### 3. Recurrence Weights (`rslds_recurrence_weights.png`)
 * **Exclusive to the Recurrent SLDS.**
 * Displays a heatmap of the logistic regression weights ($W$).
 * This explicitly tells you *which* macro features the model believes are responsible for driving the market from one regime into another (e.g., showing that a spike in Yield Spread strongly triggers a transition into a Bear state).
+
+![rSLDS Recurrence Weights](results/rslds_recurrence_weights.png)
 
 ---
 
