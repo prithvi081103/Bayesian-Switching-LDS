@@ -95,6 +95,23 @@ Plots the cumulative equity curve of the regime-switching strategy versus a stan
 
 ![rSLDS Recurrence Weights](results/rslds_recurrence_weights.png)
 
+### Gibbs "Convergence"
+The code runs a fixed iteration count for Gibbs sampling. There is no built-in $\hat R$, ESS (Effective Sample Size), or automatic stopping criteria. For production deployment, you must inspect the `loglik` traces or add external convergence diagnostics.
+
+### Maximum Number of Regimes
+* **HDP Models:** The upper bound is defined by $L$ (the weak limit truncation). Default $L$ is a function of the dimensionality $D$ of the features. Unused indices may never appear in the inferred sequence $z$.
+* **rSLDS:** Uses exactly $K$ labels defined by `--k` (default 3).
+
+---
+
+## ⚠️ Limitations & Honest Caveats
+
+1. **In-Sample Evaluation:** Unless you maintain a strict holdout script, the master pipeline fits and evaluates on the *same* time window. The metrics shown are *not* out-of-sample forecasts.
+2. **Global Z-Score Lookahead:** Using mean and standard deviation over *all* rows in a given slice to scale the features injects look-ahead bias into the scaler relative to a strictly causal, walk-forward deployment.
+3. **FFBS Smoothing:** The Kalman Filter step uses full-sequence information (Forward-Filtering **Backward-Sampling**) within the fitted segment. This is standard for Bayesian SLDS, but means it operates as a smoother, not a real-time causal filter.
+4. **Bull/Bear Labels:** The economic labels are assigned via mean-return ranks on the evaluation window. They are statistical artifacts and need not match intuitive human definitions of a "bear market" (like 20% drawdowns).
+5. **rSLDS Numerics:** Extremely long MCMC chains can hit ill-conditioned covariances in the continuous state space. The `recurrent_slds.py` implementation uses stabilizing inverses and jitter, but edge cases may still throw `LinAlgError` overflow exceptions.
+
 ---
 
 ## ⚙️ Installation & Requirements
